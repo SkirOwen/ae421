@@ -1,0 +1,719 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>main</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-05-29"><meta name="DC.source" content="main.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">airplane config:</a></li><li><a href="#3">QUESTION 1</a></li><li><a href="#4">QUESTION2</a></li><li><a href="#5">QUESTION3</a></li><li><a href="#6">QUESTION4</a></li><li><a href="#7">QUESTION5</a></li><li><a href="#8">Question 6 PH</a></li><li><a href="#9">Transfert functions</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>; clc;
+</pre><h2 id="2">airplane config:</h2><pre class="codeinput"><span class="comment">%Nominal Configuration</span>
+m = 7063; <span class="comment">%[kg]</span>
+Xcg = 0.22;
+Ixx = 4951.7; <span class="comment">%[kg.m^2]</span>
+Iyy = 108511; <span class="comment">%[kg.m^2]</span>
+Izz = 111244; <span class="comment">%[kg.m^2]</span>
+g = 9.81; <span class="comment">%[m.s^(-2)]</span>
+
+<span class="comment">% Flight conditions</span>
+H = 12192; <span class="comment">% Altitude [m]</span>
+rho = 0.302; <span class="comment">% Air Density [km/m^3]</span>
+M = 0.80; <span class="comment">% Mach Number [without unit]</span>
+U0 = 235.9; <span class="comment">% Velocity [m/s]</span>
+theta0 = 7.5 ; <span class="comment">% Initial attitude theta0 [deg]</span>
+
+<span class="comment">% Geometric Data</span>
+S = 18.58; <span class="comment">% Wing Area [m^2]</span>
+b = 6.82;  <span class="comment">% Wing Span [m]</span>
+C = 3.13; <span class="comment">% Wing Chord [m]</span>
+AR = 2.5; <span class="comment">% Aspect ratio [without unit]</span>
+e = 0.93; <span class="comment">% Oswald factor [without unit]</span>
+
+<span class="comment">% Steady state conditions [without unit]</span>
+CL0 = 0.42; CD0 = 0.13;
+CTx0 = 0.025; Cm0 = 0; Cmt0 = 0;
+
+<span class="comment">% Aerodynamic derivatives [without unit]</span>
+Cmu = -0.1; Cmalpha = -1; Cmalphad = -1.6;
+Cmq = -12.5; Cmtu = 0;Cmtalpha = 0;
+CLu = 0; CLalpha = 4; CLalphad = 0; CLq = 0;
+CDu = 0; CDalpha = 0.8; CDalphad = 0; CDq = 0;
+CTu = 0; CLdelta_e = 1.1; CDdelta_e = 0; Cmdelta_e = -1.5;
+
+q = (1/2)*(rho)*(U0)^2;
+</pre><h2 id="3">QUESTION 1</h2><p>Elements of matrix A</p><pre class="codeinput">Xu = -q*S/(m*U0)*(2*CD0+CDu);
+Xw = q*S/(m*U0)*(CL0-2/(pi*e*AR)*CL0*CLalpha);
+
+Zu = -q*S/(m*U0)*(2*CL0 + M^2/(1-M^2)*CL0);
+Zw = -q*S/(m*U0)*(CD0+CLalpha);
+Zq = q*S*C/(2*m*U0)*CLq;
+
+
+Mu = q*S*C/(Iyy*U0)*Cmu;
+Mw = q*S*C/(Iyy*U0)*Cmalpha;
+Mwd = q*S*C^2/(2*Iyy*U0^2)*Cmalphad;
+Mq = q*S*C^2/(2*Iyy*U0)*Cmq;
+
+<span class="comment">% Elements of matrix B</span>
+CMdelta_e = Cmdelta_e/M;
+CLdelta_T = 0; CDdelta_T = 0; CMdelta_T = 0;
+
+Xdelta_e = q*S/(m*U0)*CDdelta_e;
+Zdelta_e= q*S/(m*U0)*CLdelta_e;
+Mdelta_e = q*S*C/(Iyy*U0)*CMdelta_e;
+Xdelta_T = q*S/(m*U0)*CDdelta_T;
+Zdelta_T = q*S/(m*U0)*CLdelta_T;
+Mdelta_T = q*S*C/(Iyy*U0)*CMdelta_T;
+</pre><h2 id="4">QUESTION2</h2><pre class="codeinput">A = [Xu Xw 0 -g*cos(deg2rad(theta0));
+    Zu Zw U0 -g*sin(deg2rad(theta0));
+    Mu+Mwd*Zu Mw+Mwd*Zw Mq+U0*Mwd -Mwd*g*sin(deg2rad(theta0));
+    0 0 1 0];
+
+B = [Xdelta_e Xdelta_T;
+    Zdelta_e Zdelta_T;
+    Mdelta_e+Mwd*Zdelta_e Mdelta_T+Mwd*Zdelta_T;
+    0 0];
+</pre><h2 id="5">QUESTION3</h2><pre class="codeinput">CS = poly(A);
+</pre><h2 id="6">QUESTION4</h2><pre class="codeinput">eig_vals = eig(A);
+</pre><h2 id="7">QUESTION5</h2><p>Short period mode</p><pre class="codeinput">wnSP = sqrt(eig_vals(1)*eig_vals(2)); <span class="comment">% Natural Frequency</span>
+zetaSP = (-eig_vals(1)-eig_vals(2))/(2*wnSP); <span class="comment">% Damping Factor</span>
+<span class="comment">%</span>
+<span class="comment">% Phugoid mode</span>
+wnPM = sqrt(eig_vals(3)*eig_vals(4)); <span class="comment">% Natural Frequency</span>
+zetaPM  = (-eig_vals(3)-eig_vals(4))/(2*wnPM); <span class="comment">% Damping Factor</span>
+
+
+<span class="comment">% From there: https://courses.cit.cornell.edu/mae5070/DynamicStability.pdf</span>
+<span class="comment">% p10 in pdf (real p84)</span>
+
+<span class="comment">% zetaSP = sqrt(1/(1+(imag(eig_vals(1)) / real(eig_vals(1)))^2));</span>
+<span class="comment">% zetaPM = sqrt(1/(1+(imag(eig_vals(3)) / real(eig_vals(3)))^2));</span>
+<span class="comment">%</span>
+<span class="comment">% wnSP = -real(eig_vals(1))/zetaSP;</span>
+<span class="comment">% wnPM = -real(eig_vals(3))/zetaPM;</span>
+</pre><h2 id="8">Question 6 PH</h2><pre class="codeinput">h = 0.0001;
+t=(0:h:600);
+
+<span class="comment">% phugoid values</span>
+a1_u_pm = U0;
+a2_u_pm = (0.1 + zetaPM * wnPM * a1_u_pm)/(wnPM * sqrt(1 - zetaPM^2));
+curve_gen_func_u_pm = exp(-zetaPM*wnPM*t) .* (a1_u_pm * cos(wnPM * <span class="keyword">...</span>
+    sqrt(1 - zetaPM^2) * t) + a2_u_pm * sin(wnPM * sqrt(1 - zetaPM^2) * t));
+
+a1_w_pm = 0;
+a2_w_pm = (0.1 + zetaPM * wnPM * a1_w_pm)/(wnPM * sqrt(1 - zetaPM^2));
+curve_gen_func_w_pm = exp(-zetaPM*wnPM*t) .* (a1_w_pm * cos(wnPM * <span class="keyword">...</span>
+    sqrt(1 - zetaPM^2) * t) + a2_w_pm * sin(wnPM * sqrt(1 - zetaPM^2) * t));
+
+a1_theta_pm = deg2rad(theta0);
+a2_theta_pm = (0.1 + zetaPM * wnPM * a1_theta_pm)/(wnPM * sqrt(1 - zetaPM^2));
+curve_gen_func_theta_pm = exp(-zetaPM*wnPM*t) .* (a1_theta_pm * cos(wnPM * <span class="keyword">...</span>
+    sqrt(1 - zetaPM^2) * t) + a2_theta_pm * sin(wnPM * sqrt(1 - zetaPM^2) * t));
+
+curve_gen_func_q_pm = diff(curve_gen_func_theta_pm)/h;
+
+<span class="comment">% short period plot</span>
+h = 0.0001;
+tt=(0:h:10);
+
+a1_u_sp = U0;
+a2_u_sp = (0.1 + zetaSP * wnSP * a1_u_pm)/(wnSP * sqrt(1 - zetaSP^2));
+curve_gen_func_u_sp = exp(-zetaSP*wnSP*tt) .* (a1_u_sp * cos(wnSP * <span class="keyword">...</span>
+    sqrt(1 - zetaSP^2) * tt) + a2_u_sp * sin(wnSP * sqrt(1 - zetaSP^2) * tt));
+
+a1_w_sp = 0;
+a2_w_sp = (0.1 + zetaSP * wnSP * a1_w_sp)/(wnSP * sqrt(1 - zetaSP^2));
+curve_gen_func_w_sp = exp(-zetaSP*wnSP*tt) .* (a1_w_sp * cos(wnSP * <span class="keyword">...</span>
+    sqrt(1 - zetaSP^2) * tt) + a2_w_sp * sin(wnSP * sqrt(1 - zetaSP^2) * tt));
+
+a1_theta_sp = deg2rad(theta0);
+a2_theata_sp = (0.1 + zetaSP * wnSP * a1_theta_sp)/(wnSP * sqrt(1 - zetaSP^2));
+curve_gen_func_theta_sp = exp(-zetaSP*wnSP*tt) .* (a1_theta_sp * cos(wnSP * <span class="keyword">...</span>
+    sqrt(1 - zetaSP^2) * tt) + a2_theata_sp * sin(wnSP * sqrt(1 - zetaSP^2) * tt));
+
+curve_gen_func_q_sp = diff(curve_gen_func_theta_sp)/h;
+
+<span class="comment">% plot</span>
+
+fig1 = figure(1)
+plot(t, curve_gen_func_u_pm, <span class="string">'LineWidth'</span>, 1);
+grid <span class="string">on</span>
+x = xlabel(<span class="string">'Time($s$)'</span>);
+title(<span class="string">'Axial velocity $u$ -- Phugoid'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(x, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+
+fig2 = figure(2)
+plot(t, curve_gen_func_w_pm/U0, <span class="string">'Color'</span>, [0.8500, 0.3250, 0.0980], <span class="string">'LineWidth'</span>, 1);
+grid <span class="string">on</span>
+x = xlabel(<span class="string">'Time($s$)'</span>);
+title(<span class="string">'Angle of attack $\omega/U_0$ -- Phugoid'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(x, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+
+fig3 = figure(3)
+plot(t(:,1:length(curve_gen_func_q_pm)), curve_gen_func_q_pm, <span class="string">'Color'</span>, [0.9290, 0.6940, 0.1250], <span class="string">'LineWidth'</span>, 1);
+grid <span class="string">on</span>
+x = xlabel(<span class="string">'Time($s$)'</span>);
+title(<span class="string">'Pitch rate $q$ -- Phugoid'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(x, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+
+fig4 = figure(4)
+plot(t, curve_gen_func_theta_pm, <span class="string">'Color'</span>, [0.4940, 0.1840, 0.5560], <span class="string">'LineWidth'</span>, 1);
+grid <span class="string">on</span>
+x = xlabel(<span class="string">'Time($s$)'</span>);
+title(<span class="string">'Pitch angle $\theta$ -- Phugoid'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(x, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+
+fig5 = figure(5)
+plot(t, curve_gen_func_u_pm/U0, <span class="string">'LineWidth'</span>, 1);
+hold <span class="string">on</span>
+plot(t, curve_gen_func_w_pm/U0, <span class="string">'Color'</span>, [0.8500, 0.3250, 0.0980], <span class="string">'LineWidth'</span>, 1);
+plot(t(:,1:length(curve_gen_func_q_pm)), curve_gen_func_q_pm, <span class="string">'Color'</span>, [0.9290, 0.6940, 0.1250], <span class="string">'LineWidth'</span>, 1);
+plot(t, curve_gen_func_theta_pm, <span class="string">'Color'</span>, [0.4940, 0.1840, 0.5560], <span class="string">'LineWidth'</span>, 1);
+hold <span class="string">off</span>
+lu = legend(<span class="string">'Axial velocity $u/U_0$'</span>, <span class="string">'Angle of attack $\omega/U_0$'</span>, <span class="keyword">...</span>
+    <span class="string">'Pitch rate $q$'</span>, <span class="string">'Pitch angle $\theta$'</span>);
+grid <span class="string">on</span>
+x = xlabel(<span class="string">'Time($s$)'</span>);
+title(<span class="string">'Phugoid'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(lu, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+set(x, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+
+fig6 = figure(6)
+plot(tt, curve_gen_func_u_sp, <span class="string">'LineWidth'</span>, 1);
+grid <span class="string">on</span>
+x = xlabel(<span class="string">'Time($s$)'</span>);
+title(<span class="string">'Axial velocity $u$ -- Short Periode'</span>, <span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(x, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+
+fig7 = figure(7)
+plot(tt, curve_gen_func_w_sp/U0, <span class="string">'Color'</span>, [0.8500, 0.3250, 0.0980], <span class="string">'LineWidth'</span>, 1);
+grid <span class="string">on</span>
+x = xlabel(<span class="string">'Time($s$)'</span>);
+title(<span class="string">'Angle of attack $\omega/U_0$ -- Short Periode'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(x, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+
+fig8 = figure(8)
+plot(tt(:,1:length(curve_gen_func_q_sp)), curve_gen_func_q_sp, <span class="string">'Color'</span>, [0.9290, 0.6940, 0.1250], <span class="string">'LineWidth'</span>, 1);
+grid <span class="string">on</span>
+x = xlabel(<span class="string">'Time($s$)'</span>);
+title(<span class="string">'Pitch rate $q$ -- Short Periode'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(x, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+
+fig9 = figure(9)
+plot(tt, curve_gen_func_theta_sp, <span class="string">'Color'</span>, [0.4940, 0.1840, 0.5560], <span class="string">'LineWidth'</span>, 1);
+grid <span class="string">on</span>
+x = xlabel(<span class="string">'Time($s$)'</span>);
+title(<span class="string">'Pitch angle $\theta$ -- Short Periode'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(x, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+
+fig10 = figure(10)
+plot(tt, curve_gen_func_u_sp/U0, <span class="string">'LineWidth'</span>, 1);
+hold <span class="string">on</span>
+plot(tt, curve_gen_func_w_sp/U0, <span class="string">'Color'</span>, [0.8500, 0.3250, 0.0980], <span class="string">'LineWidth'</span>, 1);
+plot(tt(:,1:length(curve_gen_func_q_sp)), curve_gen_func_q_sp, <span class="string">'Color'</span>, [0.9290, 0.6940, 0.1250], <span class="string">'LineWidth'</span>, 1);
+plot(tt, curve_gen_func_theta_sp, <span class="string">'Color'</span>, [0.4940, 0.1840, 0.5560], <span class="string">'LineWidth'</span>, 1);
+hold <span class="string">off</span>
+lu = legend(<span class="string">'Axial velocity $u/U_0$'</span>, <span class="string">'Angle of attack $\omega/U_0$'</span>, <span class="keyword">...</span>
+    <span class="string">'Pitch rate $q$'</span>, <span class="string">'Pitch angle $\theta$'</span>);
+grid <span class="string">on</span>
+x = xlabel(<span class="string">'Time($s$)'</span>);
+title(<span class="string">'Short Period'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(lu, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+set(x, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>);
+commandwindow
+</pre><pre class="codeoutput">
+fig1 = 
+
+  Figure (1) with properties:
+
+      Number: 1
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [1000 918 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+
+fig2 = 
+
+  Figure (2) with properties:
+
+      Number: 2
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [1000 918 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+
+fig3 = 
+
+  Figure (3) with properties:
+
+      Number: 3
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [1000 918 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+
+fig4 = 
+
+  Figure (4) with properties:
+
+      Number: 4
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [1000 918 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+
+fig5 = 
+
+  Figure (5) with properties:
+
+      Number: 5
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [1000 918 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+
+fig6 = 
+
+  Figure (6) with properties:
+
+      Number: 6
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [1000 918 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+
+fig7 = 
+
+  Figure (7) with properties:
+
+      Number: 7
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [1000 918 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+
+fig8 = 
+
+  Figure (8) with properties:
+
+      Number: 8
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [1000 918 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+
+fig9 = 
+
+  Figure (9) with properties:
+
+      Number: 9
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [1000 918 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+
+fig10 = 
+
+  Figure (10) with properties:
+
+      Number: 10
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [1000 918 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+</pre><img vspace="5" hspace="5" src="main_01.png" alt=""> <img vspace="5" hspace="5" src="main_02.png" alt=""> <img vspace="5" hspace="5" src="main_03.png" alt=""> <img vspace="5" hspace="5" src="main_04.png" alt=""> <img vspace="5" hspace="5" src="main_05.png" alt=""> <img vspace="5" hspace="5" src="main_06.png" alt=""> <img vspace="5" hspace="5" src="main_07.png" alt=""> <img vspace="5" hspace="5" src="main_08.png" alt=""> <img vspace="5" hspace="5" src="main_09.png" alt=""> <img vspace="5" hspace="5" src="main_10.png" alt=""> <h2 id="9">Transfert functions</h2><pre class="codeinput">syms <span class="string">s</span>;
+
+XPM = [s-Xu g; Zu/U0 s];
+DetPM = det(vpa(XPM));
+
+XSP = [s-Zw -U0; -(Mw+Mwd*Zw) s-(Mq+Mwd*U0)];
+DetSP = det(vpa(XSP));
+
+<span class="comment">% U(s)/delta_e(s)</span>
+numeratorU = s * Xdelta_e - g * Zdelta_e;
+TF_U = vpa(numeratorU / DetPM)
+
+<span class="comment">% theta(s)/delta_e(s)</span>
+numeratorT = -(Zu / U0) * Xdelta_e + (s - Xu) * Zdelta_e;
+TF_t = vpa(numeratorT / DetPM)
+
+<span class="comment">% W(s)/delta_e(s)</span>
+numeratorW = (s - (Mq + Mwd * U0)) * Zdelta_e + U0 * (Mdelta_e + Mwd * Zdelta_e);
+TF_W = vpa(numeratorW / DetSP)
+
+<span class="comment">% q(s)/delta_e(s)</span>
+numeratorQ = (Mw + Mwd * Zw) * Zdelta_e + (s - Zw) * (Mdelta_e + Mwd * Zdelta_e);
+TF_q = vpa(numeratorQ / DetSP)
+</pre><pre class="codeoutput"> 
+TF_U =
+ 
+-1.0111674572705648955661672516726/(1.0*s^2 + 0.024363222953419229332983064750806*s + 0.006182842109018831454033196526332)
+ 
+ 
+TF_t =
+ 
+(0.10307517403369673147928153866815*s + 0.0025112434459454419402743696233333)/(1.0*s^2 + 0.024363222953419229332983064750806*s + 0.006182842109018831454033196526332)
+ 
+ 
+TF_W =
+ 
+(0.10307517403369673147928153866815*s - 8.4055473746047911470278231554159)/(1.0*s^2 + 0.80826469478255641432085099040705*s + 4.6480186987648707630341476936763)
+ 
+ 
+TF_q =
+ 
+-(1.0*(0.035815893439630416827945680324774*s + 0.015820456770829014185929947675225))/(1.0*s^2 + 0.80826469478255641432085099040705*s + 4.6480186987648707630341476936763)
+ 
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all; clc;
+
+%% airplane config:
+%Nominal Configuration
+m = 7063; %[kg]
+Xcg = 0.22;
+Ixx = 4951.7; %[kg.m^2]
+Iyy = 108511; %[kg.m^2]
+Izz = 111244; %[kg.m^2]
+g = 9.81; %[m.s^(-2)]
+
+% Flight conditions
+H = 12192; % Altitude [m]
+rho = 0.302; % Air Density [km/m^3]
+M = 0.80; % Mach Number [without unit]
+U0 = 235.9; % Velocity [m/s]
+theta0 = 7.5 ; % Initial attitude theta0 [deg]
+
+% Geometric Data
+S = 18.58; % Wing Area [m^2]
+b = 6.82;  % Wing Span [m]
+C = 3.13; % Wing Chord [m]
+AR = 2.5; % Aspect ratio [without unit]
+e = 0.93; % Oswald factor [without unit]
+
+% Steady state conditions [without unit]
+CL0 = 0.42; CD0 = 0.13;
+CTx0 = 0.025; Cm0 = 0; Cmt0 = 0;
+
+% Aerodynamic derivatives [without unit]
+Cmu = -0.1; Cmalpha = -1; Cmalphad = -1.6;
+Cmq = -12.5; Cmtu = 0;Cmtalpha = 0;
+CLu = 0; CLalpha = 4; CLalphad = 0; CLq = 0;
+CDu = 0; CDalpha = 0.8; CDalphad = 0; CDq = 0;
+CTu = 0; CLdelta_e = 1.1; CDdelta_e = 0; Cmdelta_e = -1.5;
+
+q = (1/2)*(rho)*(U0)^2;
+
+%% QUESTION 1
+% Elements of matrix A
+Xu = -q*S/(m*U0)*(2*CD0+CDu);
+Xw = q*S/(m*U0)*(CL0-2/(pi*e*AR)*CL0*CLalpha);
+
+Zu = -q*S/(m*U0)*(2*CL0 + M^2/(1-M^2)*CL0);
+Zw = -q*S/(m*U0)*(CD0+CLalpha);
+Zq = q*S*C/(2*m*U0)*CLq;
+
+
+Mu = q*S*C/(Iyy*U0)*Cmu;
+Mw = q*S*C/(Iyy*U0)*Cmalpha;
+Mwd = q*S*C^2/(2*Iyy*U0^2)*Cmalphad;
+Mq = q*S*C^2/(2*Iyy*U0)*Cmq;
+
+% Elements of matrix B
+CMdelta_e = Cmdelta_e/M;
+CLdelta_T = 0; CDdelta_T = 0; CMdelta_T = 0;
+
+Xdelta_e = q*S/(m*U0)*CDdelta_e;
+Zdelta_e= q*S/(m*U0)*CLdelta_e;
+Mdelta_e = q*S*C/(Iyy*U0)*CMdelta_e;
+Xdelta_T = q*S/(m*U0)*CDdelta_T;
+Zdelta_T = q*S/(m*U0)*CLdelta_T;
+Mdelta_T = q*S*C/(Iyy*U0)*CMdelta_T;
+
+
+%% QUESTION2
+A = [Xu Xw 0 -g*cos(deg2rad(theta0));
+    Zu Zw U0 -g*sin(deg2rad(theta0));
+    Mu+Mwd*Zu Mw+Mwd*Zw Mq+U0*Mwd -Mwd*g*sin(deg2rad(theta0));
+    0 0 1 0];
+
+B = [Xdelta_e Xdelta_T;
+    Zdelta_e Zdelta_T;
+    Mdelta_e+Mwd*Zdelta_e Mdelta_T+Mwd*Zdelta_T;
+    0 0];
+
+%% QUESTION3
+CS = poly(A);
+
+%% QUESTION4
+eig_vals = eig(A);
+
+%% QUESTION5 
+% Short period mode
+wnSP = sqrt(eig_vals(1)*eig_vals(2)); % Natural Frequency
+zetaSP = (-eig_vals(1)-eig_vals(2))/(2*wnSP); % Damping Factor
+% 
+% Phugoid mode
+wnPM = sqrt(eig_vals(3)*eig_vals(4)); % Natural Frequency
+zetaPM  = (-eig_vals(3)-eig_vals(4))/(2*wnPM); % Damping Factor
+
+
+% From there: https://courses.cit.cornell.edu/mae5070/DynamicStability.pdf
+% p10 in pdf (real p84)
+
+% zetaSP = sqrt(1/(1+(imag(eig_vals(1)) / real(eig_vals(1)))^2));
+% zetaPM = sqrt(1/(1+(imag(eig_vals(3)) / real(eig_vals(3)))^2));
+% 
+% wnSP = -real(eig_vals(1))/zetaSP;
+% wnPM = -real(eig_vals(3))/zetaPM;
+
+%% Question 6 PH
+
+h = 0.0001;
+t=(0:h:600);
+
+% phugoid values
+a1_u_pm = U0;
+a2_u_pm = (0.1 + zetaPM * wnPM * a1_u_pm)/(wnPM * sqrt(1 - zetaPM^2));
+curve_gen_func_u_pm = exp(-zetaPM*wnPM*t) .* (a1_u_pm * cos(wnPM * ...
+    sqrt(1 - zetaPM^2) * t) + a2_u_pm * sin(wnPM * sqrt(1 - zetaPM^2) * t));
+
+a1_w_pm = 0;
+a2_w_pm = (0.1 + zetaPM * wnPM * a1_w_pm)/(wnPM * sqrt(1 - zetaPM^2));
+curve_gen_func_w_pm = exp(-zetaPM*wnPM*t) .* (a1_w_pm * cos(wnPM * ...
+    sqrt(1 - zetaPM^2) * t) + a2_w_pm * sin(wnPM * sqrt(1 - zetaPM^2) * t));
+
+a1_theta_pm = deg2rad(theta0);
+a2_theta_pm = (0.1 + zetaPM * wnPM * a1_theta_pm)/(wnPM * sqrt(1 - zetaPM^2));
+curve_gen_func_theta_pm = exp(-zetaPM*wnPM*t) .* (a1_theta_pm * cos(wnPM * ...
+    sqrt(1 - zetaPM^2) * t) + a2_theta_pm * sin(wnPM * sqrt(1 - zetaPM^2) * t));
+
+curve_gen_func_q_pm = diff(curve_gen_func_theta_pm)/h;
+
+% short period plot
+h = 0.0001;
+tt=(0:h:10);
+
+a1_u_sp = U0;
+a2_u_sp = (0.1 + zetaSP * wnSP * a1_u_pm)/(wnSP * sqrt(1 - zetaSP^2));
+curve_gen_func_u_sp = exp(-zetaSP*wnSP*tt) .* (a1_u_sp * cos(wnSP * ...
+    sqrt(1 - zetaSP^2) * tt) + a2_u_sp * sin(wnSP * sqrt(1 - zetaSP^2) * tt));
+
+a1_w_sp = 0;
+a2_w_sp = (0.1 + zetaSP * wnSP * a1_w_sp)/(wnSP * sqrt(1 - zetaSP^2));
+curve_gen_func_w_sp = exp(-zetaSP*wnSP*tt) .* (a1_w_sp * cos(wnSP * ...
+    sqrt(1 - zetaSP^2) * tt) + a2_w_sp * sin(wnSP * sqrt(1 - zetaSP^2) * tt));
+
+a1_theta_sp = deg2rad(theta0);
+a2_theata_sp = (0.1 + zetaSP * wnSP * a1_theta_sp)/(wnSP * sqrt(1 - zetaSP^2));
+curve_gen_func_theta_sp = exp(-zetaSP*wnSP*tt) .* (a1_theta_sp * cos(wnSP * ...
+    sqrt(1 - zetaSP^2) * tt) + a2_theata_sp * sin(wnSP * sqrt(1 - zetaSP^2) * tt));
+
+curve_gen_func_q_sp = diff(curve_gen_func_theta_sp)/h;
+
+% plot
+
+fig1 = figure(1)
+plot(t, curve_gen_func_u_pm, 'LineWidth', 1);
+grid on 
+x = xlabel('Time($s$)');
+title('Axial velocity $u$ REPLACE_WITH_DASH_DASH Phugoid','Interpreter','latex');
+set(x, 'interpreter', 'latex');
+
+fig2 = figure(2)
+plot(t, curve_gen_func_w_pm/U0, 'Color', [0.8500, 0.3250, 0.0980], 'LineWidth', 1);
+grid on 
+x = xlabel('Time($s$)');
+title('Angle of attack $\omega/U_0$ REPLACE_WITH_DASH_DASH Phugoid','Interpreter','latex');
+set(x, 'interpreter', 'latex');
+
+fig3 = figure(3)
+plot(t(:,1:length(curve_gen_func_q_pm)), curve_gen_func_q_pm, 'Color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1);
+grid on 
+x = xlabel('Time($s$)');
+title('Pitch rate $q$ REPLACE_WITH_DASH_DASH Phugoid','Interpreter','latex');
+set(x, 'interpreter', 'latex');
+
+fig4 = figure(4)
+plot(t, curve_gen_func_theta_pm, 'Color', [0.4940, 0.1840, 0.5560], 'LineWidth', 1);
+grid on 
+x = xlabel('Time($s$)');
+title('Pitch angle $\theta$ REPLACE_WITH_DASH_DASH Phugoid','Interpreter','latex');
+set(x, 'interpreter', 'latex');
+
+fig5 = figure(5)
+plot(t, curve_gen_func_u_pm/U0, 'LineWidth', 1);
+hold on
+plot(t, curve_gen_func_w_pm/U0, 'Color', [0.8500, 0.3250, 0.0980], 'LineWidth', 1);
+plot(t(:,1:length(curve_gen_func_q_pm)), curve_gen_func_q_pm, 'Color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1);
+plot(t, curve_gen_func_theta_pm, 'Color', [0.4940, 0.1840, 0.5560], 'LineWidth', 1);
+hold off
+lu = legend('Axial velocity $u/U_0$', 'Angle of attack $\omega/U_0$', ...
+    'Pitch rate $q$', 'Pitch angle $\theta$');
+grid on 
+x = xlabel('Time($s$)');
+title('Phugoid','Interpreter','latex');
+set(lu, 'interpreter', 'latex');
+set(x, 'interpreter', 'latex');
+
+fig6 = figure(6)
+plot(tt, curve_gen_func_u_sp, 'LineWidth', 1);
+grid on 
+x = xlabel('Time($s$)');
+title('Axial velocity $u$ REPLACE_WITH_DASH_DASH Short Periode', 'Interpreter','latex');
+set(x, 'interpreter', 'latex');
+
+fig7 = figure(7)
+plot(tt, curve_gen_func_w_sp/U0, 'Color', [0.8500, 0.3250, 0.0980], 'LineWidth', 1);
+grid on 
+x = xlabel('Time($s$)');
+title('Angle of attack $\omega/U_0$ REPLACE_WITH_DASH_DASH Short Periode','Interpreter','latex');
+set(x, 'interpreter', 'latex');
+
+fig8 = figure(8)
+plot(tt(:,1:length(curve_gen_func_q_sp)), curve_gen_func_q_sp, 'Color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1);
+grid on 
+x = xlabel('Time($s$)');
+title('Pitch rate $q$ REPLACE_WITH_DASH_DASH Short Periode','Interpreter','latex');
+set(x, 'interpreter', 'latex');
+
+fig9 = figure(9)
+plot(tt, curve_gen_func_theta_sp, 'Color', [0.4940, 0.1840, 0.5560], 'LineWidth', 1);
+grid on 
+x = xlabel('Time($s$)');
+title('Pitch angle $\theta$ REPLACE_WITH_DASH_DASH Short Periode','Interpreter','latex');
+set(x, 'interpreter', 'latex');
+
+fig10 = figure(10)
+plot(tt, curve_gen_func_u_sp/U0, 'LineWidth', 1);
+hold on
+plot(tt, curve_gen_func_w_sp/U0, 'Color', [0.8500, 0.3250, 0.0980], 'LineWidth', 1);
+plot(tt(:,1:length(curve_gen_func_q_sp)), curve_gen_func_q_sp, 'Color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1);
+plot(tt, curve_gen_func_theta_sp, 'Color', [0.4940, 0.1840, 0.5560], 'LineWidth', 1);
+hold off
+lu = legend('Axial velocity $u/U_0$', 'Angle of attack $\omega/U_0$', ...
+    'Pitch rate $q$', 'Pitch angle $\theta$');
+grid on 
+x = xlabel('Time($s$)');
+title('Short Period','Interpreter','latex');
+set(lu, 'interpreter', 'latex');
+set(x, 'interpreter', 'latex');
+commandwindow
+
+%% Transfert functions
+syms s;
+
+XPM = [s-Xu g; Zu/U0 s];
+DetPM = det(vpa(XPM));
+
+XSP = [s-Zw -U0; -(Mw+Mwd*Zw) s-(Mq+Mwd*U0)];
+DetSP = det(vpa(XSP));
+
+% U(s)/delta_e(s)
+numeratorU = s * Xdelta_e - g * Zdelta_e;
+TF_U = vpa(numeratorU / DetPM)
+
+% theta(s)/delta_e(s)
+numeratorT = -(Zu / U0) * Xdelta_e + (s - Xu) * Zdelta_e;
+TF_t = vpa(numeratorT / DetPM)
+
+% W(s)/delta_e(s)
+numeratorW = (s - (Mq + Mwd * U0)) * Zdelta_e + U0 * (Mdelta_e + Mwd * Zdelta_e);
+TF_W = vpa(numeratorW / DetSP)
+
+% q(s)/delta_e(s)
+numeratorQ = (Mw + Mwd * Zw) * Zdelta_e + (s - Zw) * (Mdelta_e + Mwd * Zdelta_e);
+TF_q = vpa(numeratorQ / DetSP)
+##### SOURCE END #####
+--></body></html>
